@@ -1,0 +1,55 @@
+#!/bin/bash
+
+NoNeuroData=false
+
+if [ ! -f ./NeuroNet/Data/Train/mnist_train.csv ]; then
+	NoNeuroData=true
+	echo "No training data for NeuroNet."
+fi
+
+if [ ! -f ./NeuroNet/Data/Test/mnist_test.csv ]; then
+	NoNeuroData=true
+	echo "No testing data for NeuroNet."
+fi
+
+if [ NoNeuroData ]; then
+	NoTranslateData=false
+	
+	if [ ! -f ./MNISTTranslate/mnist_train.csv ]; then
+		NoTranslateData=true
+		echo "No translated training data."
+	fi
+	
+	if [ ! -f ./MNISTTranslate/mnist_test.csv ]; then
+		NoTranslateData=true
+		echo "No translated testing data."
+	fi
+	
+	if [ NoTranslateData ]; then
+		cd ./MNISTTranslate/
+		if [ ! -f ./MNISTTranslate ]; then
+			echo "No translator build. Building..."
+			go build MNISTTranslate.go
+			echo "Building complete."
+		fi
+		echo "Starting translation."
+		./MNISTTranslate
+		cd ..
+		echo "Translation complete."
+	fi
+	
+	echo "Moving data."
+	cp ./MNISTTranslate/mnist_train.csv ./NeuroNet/Data/Train/mnist_train.csv
+	cp ./MNISTTranslate/mnist_test.csv ./NeuroNet/Data/Test/mnist_test.csv
+fi
+
+cd ./NeuroNet
+if [ ! -f ./NeuroNet ]; then
+	echo "No NeuroNet build. Building..."
+	go build ./NeuroNet.go
+	echo "Building complete."
+fi
+echo "Starting NeuroNet."
+echo "__________________"
+./NeuroNet
+cd ..

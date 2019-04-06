@@ -1,0 +1,3 @@
+Identity, 784
+ELU, 100
+SoftMax, 10
