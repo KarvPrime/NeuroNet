@@ -1,8 +1,3 @@
-// Created by	Karv Prime
-// Twitter:		https://twitter.com/KarvPrime
-// LinkedIn:	https://www.linkedin.com/in/karvprime/
-// GitHub:		https://github.com/KarvPrime
-
 // Package Persistence to save and load progress or results
 package Persistence
 
